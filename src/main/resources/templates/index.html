@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>	
+	<link th:href="@{/style.css}" rel="stylesheet">
+</head>
+<body>
+	<div>
+			<form action="#" th:action="@{/add}" th:object="${expense}" method="post">
+				<div>
+					<label for="money">Amount:</label>
+					<input type="number" th:field="*{expense}" name="money" id="money">	
+					<label for="reason">Reason:</label>
+					<input name="reason" th:field="*{reason}" id="reason">
+					<button>Send</button>
+				</div>
+			</form>
+			<div>
+				<table>
+					<tr th:each="spending : ${expenses}">
+						<td th:text="${spending.getExpense()}">
+						<td th:text="${spending.getReason()}">
+						<td th:text="${spending.getDate()}">
+					</tr>
+				</table>
+			</div>
+		</div>
+</body>
+</html>

@@ -1,5 +1,7 @@
 package ru.topacademy.spring_expensetracker;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,15 +18,15 @@ public class ExpenseController {
     @GetMapping("/")
     public String showExpenses(Model model) {
         model.addAttribute("expenses", expenseService.getAllExpenses());
-        return "expenses"; // Maps to WEB-INF/expenses.jsp
+        model.addAttribute("expense", new Expense());
+        return "index"; 
     }
 
     @PostMapping("/add")
-    public String addExpense(@RequestParam String reason, @RequestParam Long money) {
-        Expense expense = new Expense();
-        expense.setReason(reason);
-        expense.setExpense(money);
+    public String addExpense(@ModelAttribute Expense expense, Model model) {
+        expense.setDate(new Date());
         expenseService.addExpense(expense);
+        model.addAttribute("expense", expense);
         return "redirect:/";
     }
 }
