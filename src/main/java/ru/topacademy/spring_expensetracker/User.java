@@ -1,10 +1,12 @@
 package ru.topacademy.spring_expensetracker;
 
 import java.io.Serializable;
+import java.util.List;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -25,6 +27,8 @@ public class User implements Serializable
 	   String password;
 	   String matchingPassword;
 	   String email;
+	   @OneToMany(mappedBy = "user")
+	    private List<Expense> expenses;
 	   
 	public String getFirstName() {
 		return firstName;

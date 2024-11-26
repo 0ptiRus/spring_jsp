@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ExpenseRepo extends CrudRepository<Expense, Integer> 
 {
+	List<Expense> findByUser(User user);
 }

@@ -1,8 +1,13 @@
 package ru.topacademy.spring_expensetracker;
 
 import java.util.Date;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,15 +54,28 @@ public class ExpenseController {
 
     @GetMapping("/")
     public String showExpenses(Model model) {
-        model.addAttribute("expenses", expenseService.getAllExpenses());
+    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    	String email = auth.getName();
+    	List<Expense> expenses = null;
+ 
+			User loggedInUser = userService.findByEmail(email);
+			expenses = expenseService.getExpensesByUser(loggedInUser);
+	
+    	
+        model.addAttribute("expenses", expenses);
         model.addAttribute("expense", new Expense());
         return "index"; 
     }
 
     @PostMapping("/add")
     public String addExpense(@ModelAttribute Expense expense, Model model) {
+    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    	String email = auth.getName();
+    	User user = userService.findByEmail(email);
+    	
         expense.setDate(new Date());
-        expenseService.addExpense(expense);
+        expense.setUser(user);
+        expenseService.addExpenseAsync(expense);
         model.addAttribute("expense", expense);
         return "redirect:/";
     }

@@ -1,6 +1,7 @@
 package ru.topacademy.spring_expensetracker;
 
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,6 +21,11 @@ public class UserService {
 		return repo.save(user);
 	}
 	
+	public CompletableFuture<User> addUserAsync(User user)
+	{
+		return CompletableFuture.supplyAsync(() -> addUser(user));
+	}
+	
 	public User findUser(Long id)
 	{
 		Optional<User> user = repo.findById(id);
@@ -35,6 +41,11 @@ public class UserService {
 	
 	public User findByEmail(String email)
 	{
-		return repo.findByEmail(email).get(0);
+		return repo.findOneByEmail(email);
+	}
+	
+	public CompletableFuture<User> findByEmailAsync(String email)
+	{
+		return CompletableFuture.supplyAsync(() -> findByEmail(email));
 	}
 }
