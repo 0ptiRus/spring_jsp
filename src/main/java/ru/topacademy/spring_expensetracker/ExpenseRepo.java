@@ -9,4 +9,5 @@ import org.springframework.stereotype.Repository;
 public interface ExpenseRepo extends CrudRepository<Expense, Integer> 
 {
 	List<Expense> findByUser(User user);
+	Expense findOneByReason(String purpose);
 }

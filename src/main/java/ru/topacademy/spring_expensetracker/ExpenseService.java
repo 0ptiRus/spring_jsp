@@ -33,4 +33,9 @@ public class ExpenseService {
     {
     	return CompletableFuture.supplyAsync(() -> getExpensesByUser(user));
     }
+    
+    public Expense getByReason(String purpose)
+    {
+    	return expenseRepository.findOneByReason(purpose);
+    }
 }
